@@ -11,4 +11,20 @@
             <fileset dir="${src.dir}"/>
         </war>
     </target>
+    <target name="test">
+    <mkdir dir="reports/junit" />
+    <junit printsummary="on" haltonfailure="yes">
+        <classpath>
+            <pathelement path="build/classes"/>
+        </classpath>
+        <batchtest fork="yes" todir="reports/junit">
+            <fileset dir="test">
+                <include name="**/*Test.java"/>
+            </fileset>
+        </batchtest>
+        <formatter type="xml"/>
+        <formatter type="plain"/>
+    </junit>
+</target>
+
 </project>
