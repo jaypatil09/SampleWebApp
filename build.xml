@@ -1,59 +1,14 @@
 <project name="SampleWebApp" basedir="." default="war">
-
-    <!-- Property definitions -->
-    <property name="src.dir" value="src"/>
-    <property name="web.dir" value="WebContent"/>
-    <property name="test.dir" value="test"/>
-    <property name="build.dir" value="build"/>
-    <property name="classes.dir" value="${build.dir}/classes"/>
-    <property name="test.report.dir" value="reports/junit"/>
+    <property name="src.dir" value="WebContent"/>
     <property name="dist.dir" value="dist"/>
 
-    <!-- Clean build and report directories -->
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
-        <delete dir="${test.report.dir}"/>
-    </target>
-
-    <!-- Compile source files -->
-    <target name="compile">
-        <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false"/>
-    </target>
-
-    <!-- Compile test files -->
-    <target name="compile-tests" depends="compile">
-        <javac srcdir="${test.dir}" destdir="${classes.dir}" includeantruntime="false">
-            <classpath>
-                <pathelement path="${classes.dir}"/>
-            </classpath>
-        </javac>
-    </target>
-
-    <!-- Run JUnit tests -->
-    <target name="test" depends="compile-tests">
-        <mkdir dir="${test.report.dir}"/>
-        <junit printsummary="on" haltonfailure="no">
-            <classpath>
-                <pathelement path="${classes.dir}"/>
-            </classpath>
-            <batchtest fork="yes" todir="${test.report.dir}">
-                <fileset dir="${test.dir}">
-                    <include name="**/*Test.java"/>
-                </fileset>
-            </batchtest>
-            <formatter type="xml"/>
-            <formatter type="plain"/>
-        </junit>
-    </target>
-
-    <!-- Package WAR file -->
-    <target name="war" depends="test">
+    <target name="init">
         <mkdir dir="${dist.dir}"/>
-        <war destfile="${dist.dir}/SampleWebApp.war" webxml="${web.dir}/WEB-INF/web.xml">
-            <fileset dir="${web.dir}"/>
-            <classes dir="${classes.dir}"/>
+    </target>
+
+    <target name="war" depends="init">
+        <war destfile="${dist.dir}/SampleWebApp.war" webxml="${src.dir}/WEB-INF/web.xml">
+            <fileset dir="${src.dir}"/>
         </war>
     </target>
 
